@@ -1,0 +1,9 @@
+rules_version = '2';
+service cloud.firestore {
+    match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if true; // Open access for testing
+    }
+  }
+}
+
