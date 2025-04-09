@@ -4,7 +4,7 @@ import axios from "axios";
 const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || "djfyrea0d";
 const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || "UniHub";
 const API_KEY = import.meta.env.VITE_CLOUDINARY_API_KEY || "365286498138211";
-const API_SECRET = import.meta.env.VITE_CLOUDINARY_API_SECRET || ""; // Add this if using signed uploads
+const API_SECRET = import.meta.env.VITE_CLOUDINARY_API_SECRET || "G_QJvFftxWqZoIrILTD7j0VQzsc"; // Add this if using signed uploads
 
 const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`;
 const CLOUDINARY_DELETE_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/destroy`;
