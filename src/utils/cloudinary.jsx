@@ -1,17 +1,19 @@
 import axios from "axios";
+import { db } from "../config/firebaseConfig"; // Adjust according to your Firebase setup
+import crypto from "crypto";
 
 // Environment variables configuration
-const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || "djfyrea0d";
-const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || "UniHub";
-const API_KEY = import.meta.env.VITE_CLOUDINARY_API_KEY || "365286498138211";
-const API_SECRET = import.meta.env.VITE_CLOUDINARY_API_SECRET || "G_QJvFftxWqZoIrILTD7j0VQzsc"; // Add this if using signed uploads
+const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET ;
+const API_KEY = import.meta.env.VITE_CLOUDINARY_API_KEY ;
+const API_SECRET = import.meta.env.VITE_CLOUDINARY_API_SECRET ; 
 
 const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`;
 const CLOUDINARY_DELETE_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/destroy`;
 
+// File upload function
 export const uploadFileToCloudinary = async (file) => {
   try {
-    // Validate file first
     const validation = validateFile(file, {
       maxSizeMB: 15,
       allowedTypes: ["image/*", "application/pdf", "text/plain"]
@@ -22,11 +24,8 @@ export const uploadFileToCloudinary = async (file) => {
     }
 
     const formData = new FormData();
-    
-    // Required parameters
     formData.append("file", file);
     formData.append("upload_preset", UPLOAD_PRESET);
-
     formData.append("folder", "unihub_resources");
     
     const response = await axios.post(CLOUDINARY_UPLOAD_URL, formData, {
@@ -80,7 +79,7 @@ export const validateFile = (file, options = {}) => {
   if (!isTypeValid) {
     return {
       valid: false,
-      error: `Unsupported file type. Allowed: ${allowedTypes.join(', ')}`
+      error: `Unsupported file type. Allowed: ${allowedTypes.join(', ')}` 
     };
   }
 
@@ -96,23 +95,4 @@ export const validateFile = (file, options = {}) => {
 };
 
 // Cloudinary file deletion
-export const deleteFileFromCloudinary = async (publicId) => {
-  try {
-    const data = new URLSearchParams();
-    data.append("public_id", publicId); // Ensure that publicId is correct and non-empty
-    data.append("api_key", API_KEY);
-    data.append("api_secret", API_SECRET);
-
-    const response = await axios.post(CLOUDINARY_DELETE_URL, data);
-
-    if (response.data.result === "ok") {
-      return true;
-    } else {
-      throw new Error(response.data.error.message || "Failed to delete the file from Cloudinary.");
-    }
-  } catch (error) {
-    console.error("Cloudinary Delete Error:", error);
-    throw new Error(`Failed to delete file from Cloudinary: ${error.message}`);
-  }
-};
 

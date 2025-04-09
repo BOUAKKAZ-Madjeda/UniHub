@@ -10,23 +10,11 @@ import {
   doc,
   serverTimestamp
 } from "firebase/firestore";
-import { uploadFileToCloudinary, deleteFileFromCloudinary } from "../utils/cloudinary";
+import { uploadFileToCloudinary } from "../utils/cloudinary";
 import { useCollection } from "react-firebase-hooks/firestore";
+import {db} from "../config/firebaseConfig";
 import './StudyResources.css';
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyC1KoyxbNhXqWi-t0zoMK6PfwJgGRXt6fA",
-  authDomain: "projet7874-5dba9.firebaseapp.com",
-  projectId: "projet7874-5dba9",
-  storageBucket: "projet7874-5dba9.firebasestorage.app",
-  messagingSenderId: "800285397714",
-  appId: "1:800285397714:web:bc2a522d7fb60e1582530b",
-  measurementId: "G-VMJ20HVY2G"
-};
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 
 export default function StudyResources() {
   const [sections] = useState(["MI", "ST"]);
@@ -104,24 +92,6 @@ export default function StudyResources() {
     }
   };
 
-  const handleDelete = async (resourceId, publicId) => {
-    try {
-      // Step 1: Delete file from Cloudinary
-      const isDeleted = await deleteFileFromCloudinary(publicId);
-  
-      if (isDeleted) {
-        // Step 2: Delete file reference from Firestore if deletion from Cloudinary was successful
-        await deleteDoc(doc(db, "study-resources", resourceId));
-        alert("File deleted successfully!");
-      } else {
-        alert("Cloudinary delete failed.");
-      }
-    } catch (error) {
-      console.error("Delete error:", error);
-      alert("An error occurred while deleting the file.");
-    }
-  };
-  
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
@@ -277,34 +247,29 @@ export default function StudyResources() {
               ) : (
                 <div className="space-y-4">
                   {snapshot?.docs.map((doc) => {
-                    const data = doc.data();
-                    return (
-                      <div
-                        key={doc.id}
-                        className="bg-white p-4 rounded-lg shadow-sm border flex justify-between items-start"
-                      >
-                        <div>
-                          <a
-                            href={data.fileURL}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-800 font-medium"
-                          >
-                            {data.title}
-                          </a>
-                          <p className="text-sm text-gray-500 mt-1">
-                            Uploaded by: {data.uploadedBy}
-                          </p>
-                        </div>
-                        <button
-                          onClick={() => handleDelete(doc.id, data.publicId)}
-                          className="text-red-600 hover:text-red-800 text-sm"
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    );
-                  })}
+  const data = doc.data();
+  return (
+    <div
+      key={doc.id}
+      className="bg-white p-4 rounded-lg shadow-sm border flex justify-between items-start"
+    >
+      <div>
+        <a
+          href={data.fileURL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 hover:text-blue-800 font-medium"
+        >
+          {data.title}
+        </a>
+        <p className="text-sm text-gray-500 mt-1">
+          Uploaded by: {data.uploadedBy}
+        </p>
+      </div>
+      
+    </div>
+  );
+})}
                 </div>
               )}
             </div>
