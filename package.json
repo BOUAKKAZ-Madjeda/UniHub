@@ -1,26 +1,16 @@
 {
-  "name": "studyresourcess",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "name": "monprojet",
+  "version": "1.0.0",
+  "main": "index.js",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
   "dependencies": {
-    "@tailwindcss/vite": "^4.1.3",
-    "axios": "^1.8.4",
-    "firebase": "^11.5.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-firebase-hooks": "^5.1.1",
-    "react-router-dom": "^7.4.0"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-react-swc": "^3.8.0",
-    "tailwindcss": "^4.0.16",
-    "vite": "^6.2.5"
+    "express": "^4.21.2",
+    "firebase": "^11.4.0"
   }
 }
