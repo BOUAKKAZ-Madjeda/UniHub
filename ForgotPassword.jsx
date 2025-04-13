@@ -1,7 +1,7 @@
-// ForgotPassword.jsx
 import React, { useState } from 'react';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from './firebaseConfig';
+import { Link } from 'react-router-dom';
 
 function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -13,7 +13,6 @@ function ForgotPassword() {
     setError('');
     setMessage('');
 
-    // Validate email domain
     if (!email.endsWith('@ensta.edu.dz')) {
       setError('You must use a valid school email ending with @ensta.edu.dz.');
       return;
@@ -45,7 +44,7 @@ function ForgotPassword() {
         {message && <p style={{ color: 'green' }}>{message}</p>}
         <button type="submit">Send Reset Link</button>
       </form>
-      <p><a href="/signin">Back to Sign In</a></p>
+      <p><Link to="/signin">Back to Sign In</Link></p>
     </div>
   );
 }
